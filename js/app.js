@@ -1,16 +1,26 @@
-
 const userOnline = database.ref('users/' + localStorage.getItem('uid'));
 const status = userOnline.child('status');
 const servicio = userOnline.child('servicio');
-status.set('connected');
-status
-    .onDisconnect()
-    .remove();
+var usuario = JSON.parse(localStorage.getItem('usuario'));
+navigator
+    .geolocation
+    .getCurrentPosition(function (position) {
+        var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+        usuario.pos = pos;
+        userOnline.set(usuario);
+        status.set('connected');
+        status
+            .onDisconnect()
+            .remove();
 
-servicio.set('free');
-servicio
-    .onDisconnect()
-    .remove();
+        servicio.set('free');
+        servicio
+            .onDisconnect()
+            .remove();
+    });
 
 function getConnected() {
     var leadsRef = database
@@ -22,7 +32,6 @@ function getConnected() {
             deleteMarkers();
             snapshot.forEach(function (childSnapshot) {
                 var childData = childSnapshot.val();
-                console.log(childData);
                 if (childData.servicio == 'free') {
                     $('.usuarios').append('<li class="list-group-item">' + childData.name + '</li>');
                     addMarker(childData.pos);
@@ -53,7 +62,6 @@ function terminarServicio() {
 }
 
 function aceptarServicio(key, status) {
-    console.log(key);
     database
         .ref('users/' + key + '/servicio')
         .set(status);
