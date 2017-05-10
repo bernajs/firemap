@@ -56,6 +56,7 @@ database
         }
     });
 
+
 function terminarServicio() {
     database.ref('users/' + localStorage.getItem('uid') + '/servicio').set('free');
     $('button').hide();

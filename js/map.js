@@ -24,8 +24,10 @@ function initMap() {
                     lng: position.coords.longitude
                 };
 
-                infoWindow.setPosition(pos);
-                infoWindow.setContent('Tú');
+                // infoWindow.setPosition(pos);
+                new google
+                    .maps
+                    .Marker({position: pos, map: map, icon: 'assets/poi.gif', optimized: false});
                 map.setCenter(pos);
             }, function () {
                 handleLocationError(true, infoWindow, map.getCenter());
@@ -35,7 +37,24 @@ function initMap() {
         handleLocationError(false, infoWindow, map.getCenter());
     }
 
+    map
+        .addListener('drag', function () {
+            // 3 seconds after the center of the map has changed, pan back to the marker.
+            var pos = new Object();
+            setTimeout(function () {
+                pos.lat = map
+                    .getCenter()
+                    .lat();
+                pos.lng = map
+                    .getCenter()
+                    .lng();
+                database.ref('users/' + localStorage.getItem('uid') + '/pos').set(pos);
+            }, 1000);
+            console.log(pos);
+        });
+
 }
+
 // Adds a marker to the map and push to the array.
 function addMarker(location) {
     var marker = new google
