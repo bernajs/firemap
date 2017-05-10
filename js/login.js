@@ -47,7 +47,7 @@ function loginTw() {
             var user = result.user;
             alert('Hola ' + user.displayName);
             localStorage.setItem('uid', user.uid);
-            location.href = "mapa.html";
+            location.href = "home.html";
             // ...
         })
         .catch(function (error) {
