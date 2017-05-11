@@ -1,5 +1,6 @@
 var map;
 var markers = [];
+var my_pos;
 function initMap() {
     map = new google
         .maps
@@ -23,7 +24,7 @@ function initMap() {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-
+                my_pos = pos;
                 // infoWindow.setPosition(pos);
                 new google
                     .maps
@@ -98,4 +99,13 @@ function getLocation() {
             });
     }
     // return posxy;
+}
+
+function calcularDistancia(marker) {
+    var distancia = google
+        .maps
+        .geometry
+        .spherical
+        .computeDistanceBetween(new google.maps.LatLng(my_pos.lat, my_pos.lng), new google.maps.LatLng(marker.lat, marker.lng));
+        return distancia;
 }

@@ -1,3 +1,11 @@
 .margint-10 {
     margin-top: 10px;
 }
+
+.near {
+    background-color: green;
+}
+
+.far {
+    background-color: rosybrown;
+}

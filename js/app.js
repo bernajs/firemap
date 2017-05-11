@@ -33,7 +33,13 @@ function getConnected() {
             snapshot.forEach(function (childSnapshot) {
                 var childData = childSnapshot.val();
                 if (childData.servicio == 'free') {
-                    $('.usuarios').append('<li class="list-group-item">' + childData.name + '</li>');
+                    var distancia = calcularDistancia(childData.pos);
+                    var distancia_true = 'far';
+                    console.log(distancia);
+                    if (distancia < 100) {
+                        distancia_true = 'near';
+                    }
+                    $('.usuarios').append('<li class="' + distancia_true + ' list-group-item">' + childData.name + '<span class="pull-right">Distancia: ' + distancia + '</span></li>');
                     addMarker(childData.pos);
                 }
             });
@@ -55,7 +61,6 @@ database
             }
         }
     });
-
 
 function terminarServicio() {
     database.ref('users/' + localStorage.getItem('uid') + '/servicio').set('free');
